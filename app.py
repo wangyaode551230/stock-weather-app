@@ -124,16 +124,32 @@ if stock_code:
 
     try:
         ticker = yf.Ticker(f"{stock_code}.TW")
-        info = ticker.fast_info
 
-        # 股票名稱
-        name = stock_code
+try:
+    info = ticker.info
+except:
+    info = {}
 
-        # 股價
-        price = info.get("lastPrice", 0)
+# 股票名稱
+name = info.get("shortName", stock_code)
 
-        # 漲跌幅
-        change = 0
+# 股價
+price = info.get("regularMarketPrice")
+
+# 如果抓不到即時股價
+if not price:
+    try:
+        fast = ticker.fast_info
+        price = fast.get("lastPrice", 0)
+    except:
+        price = 0
+
+# 漲跌幅
+change = info.get("regularMarketChangePercent", 0)
+
+# 如果還是沒有漲跌幅
+if change is None:
+    change = 0
 
         # 天氣人格
         if change >= 3:
