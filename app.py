@@ -64,12 +64,23 @@ html, body, [class*="css"]{
 /* 搜尋框 */
 
 .stTextInput input{
-    background:#112244 !important;
+    background:rgba(255,255,255,0.08) !important;
     color:white !important;
-    border-radius:20px !important;
-    border:none !important;
-    height:60px !important;
-    font-size:24px !important;
+
+    border:1px solid rgba(255,255,255,0.08) !important;
+
+    border-radius:18px !important;
+
+    height:52px !important;
+
+    font-size:20px !important;
+
+    padding-left:20px !important;
+
+    backdrop-filter: blur(10px);
+
+    box-shadow:0 4px 20px rgba(0,0,0,0.25);
+
 }
 
 </style>
