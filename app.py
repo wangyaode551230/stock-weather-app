@@ -130,7 +130,20 @@ if stock_code in name_map:
     stock_code = name_map[stock_code]
 
 ticker_symbol = f"{stock_code}.TW"
+stock_name_map = {
+    "2330":"台積電",
+    "2317":"鴻海",
+    "2454":"聯發科",
+    "2308":"台達電",
+    "2603":"長榮",
+    "2881":"富邦金",
+    "2891":"中信金",
+    "0050":"元大50",
+    "00878":"國泰永續高股息",
+    "00919":"群益台灣精選高息"
+}
 
+stock_name = stock_name_map.get(stock_code, stock_code)
 # ======================
 # 股票資料
 # ======================
@@ -208,7 +221,7 @@ st.markdown(f"""
 font-size:72px;
 font-weight:900;
 ">
-{stock_code}
+{stock_name} ({stock_code})
 </div>
 
 <div style="
