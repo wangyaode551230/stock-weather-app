@@ -1,4 +1,4 @@
-rt streamlit as st
+import streamlit as st
 
 # 頁面設定
 st.set_page_config(
