@@ -5,6 +5,7 @@ import random
 # =========================
 # 頁面設定
 # =========================
+
 st.set_page_config(
     page_title="股市天氣",
     page_icon="☀️",
@@ -14,6 +15,7 @@ st.set_page_config(
 # =========================
 # CSS
 # =========================
+
 st.markdown("""
 <style>
 
@@ -27,10 +29,6 @@ html, body, [class*="css"] {
     padding-bottom: 3rem;
 }
 
-h1,h2,h3,p{
-    color:#1f2233;
-}
-
 .stock-card{
     background:white;
     border-radius:30px;
@@ -41,12 +39,12 @@ h1,h2,h3,p{
 
 .energy{
     color:#28d463;
-    font-size:68px;
+    font-size:60px;
     font-weight:bold;
 }
 
 .personality{
-    font-size:34px;
+    font-size:32px;
     font-weight:bold;
     margin-top:10px;
 }
@@ -57,9 +55,9 @@ h1,h2,h3,p{
 }
 
 .big-title{
-    font-size:58px;
+    font-size:56px;
     font-weight:bold;
-    margin-bottom:30px;
+    margin-bottom:20px;
 }
 
 </style>
@@ -68,22 +66,26 @@ h1,h2,h3,p{
 # =========================
 # 標題
 # =========================
-st.markdown(
-    '<div class="big-title">🔥 熱門股票人格榜</div>',
-    unsafe_allow_html=True
-)
+
+st.markdown("""
+<div class="big-title">
+🔥 熱門股票人格榜
+</div>
+""", unsafe_allow_html=True)
 
 # =========================
 # 搜尋
 # =========================
+
 search = st.text_input(
-    "🔎 搜尋股票代號",
-    placeholder="輸入台股代號，例如 2330"
+    "🔎 搜尋股票",
+    placeholder="輸入股票代號，例如 2330"
 )
 
 # =========================
 # 股票列表
 # =========================
+
 stocks = {
     "2330":"台積電",
     "2317":"鴻海",
@@ -95,6 +97,7 @@ stocks = {
 # =========================
 # 股票卡片
 # =========================
+
 for code,name in stocks.items():
 
     if search != "":
@@ -106,12 +109,10 @@ for code,name in stocks.items():
         ticker = yf.Ticker(f"{code}.TW")
         info = ticker.info
 
-        price = info.get("regularMarketPrice",0)
+        price = info.get("regularMarketPrice","--")
         change = info.get("regularMarketChangePercent",0)
 
-        # =========================
-        # AI人格
-        # =========================
+        # AI 人格
 
         if change >= 3:
             icon = "🦁"
@@ -131,15 +132,11 @@ for code,name in stocks.items():
 
         energy = random.randint(40,95)
 
-        # =========================
-        # 卡片
-        # =========================
-
         st.markdown(f"""
         <div class="stock-card">
 
             <div class="stock-title">
-                {icon} {code} {name}
+            {icon} {code} {name}
             </div>
 
             <h2>
@@ -151,15 +148,15 @@ for code,name in stocks.items():
             </h2>
 
             <div class="personality">
-                {personality}
+            {personality}
             </div>
 
             <div class="energy">
-                ⚡ {energy}
+            ⚡ {energy}
             </div>
 
         </div>
         """, unsafe_allow_html=True)
 
     except:
-        pass
+        st.error(f"{code} 資料讀取失敗")
