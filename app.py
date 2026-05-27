@@ -204,13 +204,7 @@ def load_stock_list():
     return df
     
 
-    df = pd.DataFrame(
-        stock_data,
-        columns=["code", "name"]
-    )
-
-    return df
-
+    
 # 載入股票資料
 stock_list = load_stock_list()
 
