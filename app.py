@@ -246,7 +246,25 @@ stock_code = selected_stock.split(" ")[0]
 
 try:
 
-    ticker = yf.Ticker(f"{stock_code}.TW")
+    # 自動判斷台股市場
+ticker = None
+
+for suffix in [".TW", ".TWO"]:
+    try:
+        test = yf.Ticker(f"{stock_code}{suffix}")
+        info = test.info
+
+        if info and info.get("regularMarketPrice"):
+            ticker = test
+            break
+    except:
+        pass
+
+if ticker is None:
+    st.error("查無股票資料")
+    st.stop()
+
+info = ticker.info
 
     # 即時資訊
     fast = ticker.fast_info
