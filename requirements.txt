@@ -1,5 +1,5 @@
 streamlit
 yfinance
-plotly
+twstock
 pandas
-streamlit-autorefresh
+numpy
