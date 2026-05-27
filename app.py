@@ -419,7 +419,7 @@ for i, item in enumerate(rank_data):
         font-weight:900;
         margin-top:12px;
         ">
-        {code}
+        {name}
         </div>
 
         <div style="
