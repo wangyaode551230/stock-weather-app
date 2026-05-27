@@ -275,25 +275,100 @@ rank_data = [
     ("2454 聯發科","🌧️ 下雨",52),
 ]
 
-for stock,weather,score in rank_data:
+for i, (stock,weather,score) in enumerate(rank_data, start=1):
+
+    animals = ["🦁","🐺","🦊","🐢"]
+
+    arrows = ["📈","📉","➡️"]
+
+    animal = random.choice(animals)
+
+    arrow = random.choice(arrows)
 
     st.markdown(f"""
-    <div class="rank-card">
+    <div style="
+    background:linear-gradient(135deg,#111827,#0f172a);
+    padding:22px;
+    border-radius:24px;
+    margin-bottom:18px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    ">
 
-    <div style="font-size:22px;font-weight:bold;">
+    <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    ">
+
+    <div>
+
+    <div style="
+    font-size:18px;
+    color:#94a3b8;
+    ">
+    #{i} 排名
+    </div>
+
+    <div style="
+    font-size:32px;
+    margin-top:8px;
+    ">
+    {animal}
+    </div>
+
+    </div>
+
+    <div style="
+    flex:1;
+    margin-left:20px;
+    ">
+
+    <div style="
+    font-size:30px;
+    font-weight:bold;
+    color:white;
+    ">
     {stock}
     </div>
 
-    <br>
-
-    <div style="font-size:18px;">
+    <div style="
+    margin-top:10px;
+    font-size:22px;
+    color:#cbd5e1;
+    ">
     {weather}
     </div>
 
-    <br>
+    </div>
 
-    <div style="color:#22c55e;font-size:26px;font-weight:bold;">
-    ⚡ {score}
+    <div style="
+    text-align:right;
+    ">
+
+    <div style="
+    font-size:20px;
+    ">
+    {arrow}
+    </div>
+
+    <div style="
+    font-size:42px;
+    font-weight:bold;
+    color:#22c55e;
+    margin-top:10px;
+    ">
+    {score}
+    </div>
+
+    <div style="
+    color:#94a3b8;
+    font-size:14px;
+    ">
+    能量值
+    </div>
+
+    </div>
+
     </div>
 
     </div>
