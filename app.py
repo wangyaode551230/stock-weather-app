@@ -114,9 +114,9 @@ st.markdown('<div class="title">🔥熱門股票人格榜</div>', unsafe_allow_h
 
 stock_code = st.text_input(
     "",
-    placeholder="輸入股票代號，例如 2330"
+    placeholder="輸入股票代號，例如 2330",
+    label_visibility="collapsed"
 )
-
 # ======================
 # 股票資料
 # ======================
