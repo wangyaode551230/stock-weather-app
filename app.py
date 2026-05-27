@@ -112,13 +112,72 @@ st.markdown("""
 
 st.markdown('<div class="title">🔥熱門股票人格榜</div>', unsafe_allow_html=True)
 
+# 搜尋股票
 stock_code = st.text_input(
     "",
     placeholder="輸入股票代號，例如 2330",
     label_visibility="collapsed"
 )
+
+# 即時查詢
 if stock_code:
-    st.write(f"你搜尋的是：{stock_code}")
+
+    try:
+        ticker = yf.Ticker(f"{stock_code}.TW")
+        info = ticker.info
+
+        # 股票名稱
+        name = info.get("shortName", "台股")
+
+        # 股價
+        price = info.get("regularMarketPrice", 0)
+
+        # 漲跌幅
+        change = info.get("regularMarketChangePercent", 0)
+
+        # 天氣人格
+        if change >= 3:
+            weather = "☀️ 晴天"
+            personality = "獅王型"
+            energy = 82
+
+        elif change >= 0:
+            weather = "⛅ 多雲"
+            personality = "穩健型"
+            energy = 65
+
+        elif change >= -3:
+            weather = "🌧️ 下雨"
+            personality = "狐狸型"
+            energy = 45
+
+        else:
+            weather = "⛈️ 暴風雨"
+            personality = "狼型"
+            energy = 20
+
+        st.markdown(f"""
+        <div class="stock-card">
+
+            <h1>{stock_code} {name}</h1>
+
+            <h2>{weather}</h2>
+
+            <p>{personality}</p>
+
+            <h1 style="color:#4ade80;">
+                能量值：{energy}
+            </h1>
+
+            <p>目前股價：{price}</p>
+
+            <p>漲跌幅：{round(change,2)}%</p>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+    except:
+        st.error("查無股票資料")
 # ======================
 # 股票資料
 # ======================
