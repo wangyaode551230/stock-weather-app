@@ -184,6 +184,7 @@ st.markdown(
 # =========================
 # 自動抓全部台股
 # =========================
+
 def load_stock_list():
 
     url = "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2"
@@ -203,8 +204,9 @@ def load_stock_list():
 
         return df
 
-     except:
-            stock_data = [
+    except:
+
+        stock_data = [
             ("2330", "台積電"),
             ("2317", "鴻海"),
             ("2454", "聯發科"),
@@ -213,9 +215,11 @@ def load_stock_list():
             ("2881", "富邦金"),
             ("2891", "中信金"),
             ("0050", "元大台灣50"),
-    ]
+        ]
 
-    return pd.DataFrame(stock_data, columns=["code", "name"])
+        return pd.DataFrame(stock_data, columns=["code", "name"])
+
+
 # 載入股票資料
 stock_list = load_stock_list()
 
