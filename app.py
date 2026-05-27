@@ -96,13 +96,12 @@ popular = {
 
 st.markdown("### 🔥 熱門股票")
 
-for code, name in popular.items():
+cols = st.columns(5)
 
-    if st.button(f"{code} {name}"):
-
-        stock_code = code
-
-        st.rerun()
+for i, (code, name) in enumerate(popular.items()):
+    with cols[i]:
+        if st.button(f"{code}\n{name}"):
+            stock_code = code
 
 # =========================
 # 股票分析
