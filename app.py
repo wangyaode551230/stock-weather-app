@@ -258,11 +258,11 @@ try:
                 ticker = test
                 break
         except:
-        pass
+            pass
         
     if ticker is None:
-    st.error("查無股票資料")
-    st.stop()
+        st.error("查無股票資料")
+        st.stop()
 
     info = ticker.info
 
