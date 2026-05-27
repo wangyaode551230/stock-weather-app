@@ -441,7 +441,123 @@ for i, item in enumerate(rank_data):
 
         </div>
         """, unsafe_allow_html=True)
+# ======================
+# 動物圖示解釋
+# ======================
 
+st.subheader("🧬 AI 動物模型解釋")
+
+st.markdown("""
+<div class="card">
+
+<div style="
+font-size:18px;
+color:#cbd5e1;
+margin-bottom:25px;
+line-height:1.8;
+">
+
+AI 會根據：
+
+✔ 股價漲跌幅  
+✔ 成交量變化  
+✔ 市場波動  
+✔ 資金動能  
+
+自動判斷目前市場情緒，
+並轉換成不同的「動物模型」。
+
+</div>
+
+<hr style="border:1px solid rgba(255,255,255,0.08);">
+
+<div style="line-height:2.4;font-size:20px;">
+
+🦁 <span style="font-size:26px;font-weight:900;color:#4ade80;">
+獅王模式
+</span>
+
+<br>
+
+市場進入超強多頭，
+主力資金大量流入，
+短線爆發力極高。
+
+通常出現在：
+🔥 飆股
+🔥 強勢突破
+🔥 AI 主流族群
+
+<br><br>
+
+🐺 <span style="font-size:26px;font-weight:900;color:#22c55e;">
+狼王模式
+</span>
+
+<br>
+
+市場偏多，
+資金持續進場，
+屬於穩定上漲格局。
+
+通常代表：
+⚡ 波段行情
+⚡ 趨勢成形
+⚡ 主流股輪動
+
+<br><br>
+
+🐢 <span style="font-size:26px;font-weight:900;color:#facc15;">
+烏龜模式
+</span>
+
+<br>
+
+市場進入震盪整理，
+多空力量接近平衡。
+
+通常代表：
+☁️ 觀望氣氛濃厚
+☁️ 成交量不足
+☁️ 等待方向突破
+
+<br><br>
+
+🦊 <span style="font-size:26px;font-weight:900;color:#fb923c;">
+狐狸模式
+</span>
+
+<br>
+
+市場轉弱，
+資金開始保守。
+
+通常代表：
+⚠️ 漲勢鈍化
+⚠️ 主力減碼
+⚠️ 短線修正
+
+<br><br>
+
+🐍 <span style="font-size:26px;font-weight:900;color:#fb7185;">
+毒蛇模式
+</span>
+
+<br>
+
+市場進入恐慌區域，
+波動劇烈，
+風險快速升高。
+
+通常代表：
+⛈️ 急跌行情
+⛈️ 停損潮
+⛈️ 空方主導
+
+</div>
+
+</div>
+""", unsafe_allow_html=True)
 # ======================
 # AI 解讀
 # ======================
