@@ -92,7 +92,13 @@ for code, info in twstock.codes.items():
 
         stock_name = f"{code} {info.name}"
 
-        stocks[stock_name] = f"{code}.TW"
+        # 上市股票
+if info.market == "上市":
+    stocks[stock_name] = f"{code}.TW"
+
+# 上櫃股票
+else:
+    stocks[stock_name] = f"{code}.TWO"
 
 # =========================
 # 搜尋股票
