@@ -17,7 +17,7 @@ st.set_page_config(
 # CSS
 # =========================
 
-st.markdown("""
+st.markdown(f"""
 <style>
 
 .stApp{
@@ -52,7 +52,7 @@ h1,h2,h3,p{
 # 標題
 # =========================
 
-st.markdown("""
+st.markdown(f"""
 <h1 style="
 font-size:58px;
 font-weight:900;
@@ -63,7 +63,7 @@ margin-bottom:0;
 </h1>
 """, unsafe_allow_html=True)
 
-st.markdown("""
+st.markdown(f"""
 <p style="
 font-size:24px;
 color:#6b7280;
@@ -291,7 +291,7 @@ margin-top:20px;
 # 熱門排行榜
 # =========================
 
-st.markdown("""
+st.markdown(f"""
 <h1 style="
 margin-top:40px;
 font-size:42px;
@@ -336,7 +336,7 @@ box-shadow:0 5px 20px rgba(0,0,0,0.3);
 # 動物人格說明
 # =========================
 
-st.markdown("""
+st.markdown(f"""
 <h1 style="
 margin-top:50px;
 font-size:42px;
