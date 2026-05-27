@@ -78,11 +78,17 @@ margin-bottom:40px;
 # 自動抓台股
 # =========================
 
+
+
 stocks = {}
 
 for code, info in twstock.codes.items():
 
-    if info.market in ["上市", "上櫃"]:
+    if (
+        info.market in ["上市", "上櫃"]
+        and "購" not in info.name
+        and "售" not in info.name
+    ):
 
         stock_name = f"{code} {info.name}"
 
