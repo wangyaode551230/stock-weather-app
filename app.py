@@ -184,20 +184,24 @@ st.markdown(
 # =========================
 # 自動抓全部台股
 # =========================
+def load_stock_list():
 
-    tables = pd.read_html(url)
+    url = "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2"
 
-    df = tables[0]
+    try:
+        tables = pd.read_html(url)
 
-    df.columns = df.iloc[0]
+        df = tables[0]
 
-    df = df[1:]
+        df.columns = df.iloc[0]
 
-    df[['code', 'name']] = df['有價證券代號及名稱'].str.split('　', expand=True)
+        df = df[1:]
 
-    df = df[['code', 'name']]
+        df[['code', 'name']] = df['有價證券代號及名稱'].str.split('　', expand=True)
 
-    return df
+        df = df[['code', 'name']]
+
+        return df
 
 except:
     stock_data = [
