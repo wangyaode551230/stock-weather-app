@@ -109,21 +109,31 @@ search = st.text_input(
     value="2330"
 )
 
-tw_map = {
+search = st.text_input(
+    "🔍 搜尋股票代號或名稱",
+    value="2330"
+)
+
+# 自動判斷股票代號
+stock_code = search.strip()
+
+# 中文股票轉換
+name_map = {
+    "台積":"2330",
     "台積電":"2330",
     "鴻海":"2317",
+    "聯發":"2454",
     "聯發科":"2454",
-    "台達電":"2308",
     "長榮":"2603",
+    "富邦":"2881",
     "富邦金":"2881",
-    "中信金":"2891",
-    "0050":"0050",
-    "00878":"00878",
-    "00919":"00919",
-    "00929":"00929"
+    "中信":"2891",
+    "中信金":"2891"
 }
 
-stock_code = tw_map.get(search, search)
+if stock_code in name_map:
+    stock_code = name_map[stock_code]
+
 ticker_symbol = f"{stock_code}.TW"
 
 # ======================
