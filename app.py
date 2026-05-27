@@ -136,8 +136,17 @@ df = yf.download(
     progress=False
 )
 
-latest_price = float(df["Close"].iloc[-1])
-old_price = float(df["Close"].iloc[-5])
+# 最新價格
+latest_price = round(df["Close"].iloc[-1].item(), 2)
+
+# 五日前價格
+old_price = round(df["Close"].iloc[-5].item(), 2)
+
+# 漲跌
+diff = latest_price - old_price
+
+# 漲跌百分比
+percent = round((diff / old_price) * 100, 2)
 
 diff = latest_price - old_price
 
