@@ -268,23 +268,100 @@ except:
 st.write("")
 st.subheader("🔥 熱門股票排行榜")
 
-rank_data = [
-    ("2330 台積電","☀️ 晴天",88),
-    ("2603 長榮","⛈️ 暴風雨",76),
-    ("2317 鴻海","⛅ 多雲",65),
-    ("2454 聯發科","🌧️ 下雨",52),
+rank_data = []
+
+top_stocks = [
+    ("2330","台積電"),
+    ("2603","長榮"),
+    ("2317","鴻海"),
+    ("2454","聯發科"),
+    ("2881","富邦金")
 ]
 
-for i, (stock,weather,score) in enumerate(rank_data, start=1):
+for code,name in top_stocks:
 
-    animals = ["🦁","🐺","🦊","🐢"]
+    try:
 
-    arrows = ["📈","📉","➡️"]
+        ticker = yf.Ticker(f"{code}.TW")
 
-    animal = random.choice(animals)
+        hist = ticker.history(period="5d")
 
-    arrow = random.choice(arrows)
+        if len(hist) >= 2:
 
+            close_now = hist["Close"].iloc[-1]
+
+            close_old = hist["Close"].iloc[-2]
+
+            change = ((close_now - close_old) / close_old) * 100
+
+            volume = hist["Volume"].iloc[-1]
+
+            avg_volume = hist["Volume"].mean()
+
+            # ======================
+            # AI 情緒判斷
+            # ======================
+
+            if change >= 4:
+
+                weather = "🔥 火山"
+
+                score = 95
+
+                animal = "🦁"
+
+            elif change >= 2:
+
+                weather = "☀️ 晴天"
+
+                score = 82
+
+                animal = "🐺"
+
+            elif change >= 0:
+
+                weather = "☁️ 多雲"
+
+                score = 65
+
+                animal = "🐢"
+
+            elif change >= -3:
+
+                weather = "🌧️ 下雨"
+
+                score = 42
+
+                animal = "🦊"
+
+            else:
+
+                weather = "⛈️ 暴風雨"
+
+                score = 20
+
+                animal = "🐍"
+
+            # 成交量爆增加分
+
+            if volume > avg_volume * 1.5:
+
+                score += 5
+
+            score = min(score,100)
+
+            rank_data.append(
+                (
+                    f"{code} {name}",
+                    weather,
+                    score,
+                    animal,
+                    round(change,2)
+                )
+            )
+
+    except:
+        pass
     st.markdown(f"""
     <div style="
     background:linear-gradient(135deg,#111827,#0f172a);
