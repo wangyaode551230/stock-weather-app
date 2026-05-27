@@ -87,11 +87,11 @@ stock_code = st.text_input(
 # =========================
 
 popular = {
-    "2330":"台積電",
-    "2317":"鴻海",
-    "2454":"聯發科",
-    "2603":"長榮",
-    "2881":"富邦金"
+    "2330": "台積電",
+    "2317": "鴻海",
+    "2454": "聯發科",
+    "2603": "長榮",
+    "2881": "富邦金"
 }
 
 st.markdown("### 🔥 熱門股票")
@@ -100,8 +100,17 @@ cols = st.columns(5)
 
 for i, (code, name) in enumerate(popular.items()):
     with cols[i]:
-        if st.button(f"{code}\n{name}"):
+        if st.button(f"{code}\n{name}", use_container_width=True):
             stock_code = code
+
+            st.markdown(f"""
+            <div class="card">
+                <h2>{name} ({code})</h2>
+                <h3>☀️ 晴天</h3>
+                <p>人格：王者型</p>
+                <h1 style="color:#4ade80;">82</h1>
+            </div>
+            """, unsafe_allow_html=True)
 
 # =========================
 # 股票分析
