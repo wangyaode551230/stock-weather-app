@@ -391,8 +391,9 @@ for code, name in top_list:
             energy = 42
 
         rank_data.append(
-            [code, icon, ani, energy]
-        )
+             [code, name, icon, ani, energy]
+)
+    
 
     except:
         pass
@@ -401,7 +402,7 @@ cols = st.columns(4)
 
 for i, item in enumerate(rank_data):
 
-    code, icon, ani, energy = item
+    code, name, icon, ani, energy = item
 
     with cols[i % 4]:
 
