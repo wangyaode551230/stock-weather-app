@@ -80,7 +80,7 @@ st.markdown("## 🔍 搜尋股票")
 stock_code = st.text_input(
     "",
     placeholder="輸入台股代號，例如 2330"
-)
+).strip()
 
 # =========================
 # 熱門股票
@@ -96,11 +96,13 @@ popular = {
 
 st.markdown("### 🔥 熱門股票")
 
-cols = st.columns(5)
+for code, name in popular.items():
 
-for i, code in enumerate(popular):
-    if cols[i].button(code):
+    if st.button(f"{code} {name}"):
+
         stock_code = code
+
+        st.rerun()
 
 # =========================
 # 股票分析
