@@ -106,11 +106,11 @@ else:
 
 selected_stock = st.selectbox(
     "搜尋股票",
-    options=list(stock_options.keys()),
+    options=list(stocks.keys()),
     index=0
 )
 
-stock_id = stock_options[selected_stock]
+stock_id = stocks[selected_stock]
 
 # =========================
 # 下載股票資料
