@@ -1,209 +1,99 @@
-import streamlit as st
-import yfinance as yf
-import pandas as pd
-import random
-import plotly.graph_objects as go
-from streamlit_autorefresh import st_autorefresh
+rt streamlit as st
 
-# =========================
-# APP 設定
-# =========================
+# 頁面設定
 st.set_page_config(
     page_title="股市天氣",
-    page_icon="🌤️",
+    page_icon="☀️",
     layout="wide"
 )
 
-# =========================
-# 自動刷新（60秒）
-# =========================
-st_autorefresh(
-    interval=60000,
-    key="stock_refresh"
-)
-
-# =========================
-# CSS 美化
-# =========================
+# 深色主題 CSS
 st.markdown("""
 <style>
 
-html, body, [class*="css"] {
-    background-color: #07111f;
+.stApp {
+    background-color: #06111f;
     color: white;
-    font-family: sans-serif;
 }
 
-.main-title {
-    font-size: 48px;
+.title {
+    font-size: 42px;
     font-weight: bold;
     color: white;
 }
 
-.sub-title {
-    color: #A0AEC0;
-    font-size: 20px;
+.sub {
+    color: #9aa4b2;
+    font-size: 18px;
+    margin-bottom: 30px;
 }
 
 .weather-card {
-    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    background: linear-gradient(135deg, #ffb347, #ffcc33);
     padding: 30px;
     border-radius: 25px;
-    margin-top: 20px;
-    box-shadow: 0px 5px 20px rgba(0,0,0,0.4);
+    color: white;
+    margin-bottom: 25px;
 }
 
-.stock-row {
-    background-color: #132238;
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 10px;
+.stock-card {
+    background: #0f1c2e;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.big {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.small {
     font-size: 20px;
+    opacity: 0.9;
+}
+
+.energy {
+    font-size: 32px;
+    color: #4ade80;
+    font-weight: bold;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
 # 標題
-# =========================
-st.markdown(
-    '<div class="main-title">🌤️ 股市天氣</div>',
-    unsafe_allow_html=True
-)
+st.markdown('<div class="title">股市天氣 ☀️</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub">用天氣與人格，看懂股市情緒</div>', unsafe_allow_html=True)
 
-st.markdown(
-    '<div class="sub-title">人人看得懂的股票分析 APP</div>',
-    unsafe_allow_html=True
-)
+# 今日天氣卡
+st.markdown("""
+<div class="weather-card">
+    <div class="small">今日市場天氣</div>
+    <div class="big">晴天 ☀️</div>
+    <div class="small">
+        市場偏樂觀<br>
+        資金流入，人氣上升中！
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-st.write("")
+# 排行榜
+st.subheader("🔥 熱門股票人格榜")
 
-# =========================
-# 股票輸入
-# =========================
-stock_id = st.text_input(
-    "輸入股票代碼",
-    "2330.TW"
-)
-
-# =========================
-# 開始分析
-# =========================
-if st.button("開始分析"):
-
-    try:
-
-        # 下載資料
-        df = yf.download(
-            stock_id,
-            period="3mo",
-            progress=False
-        )
-
-        # 防呆
-        if len(df) < 5:
-            st.error("股票資料不足")
-            st.stop()
-
-        # 最新價格
-        latest_price = round(df["Close"].iloc[-1].item(), 2)
-
-        # 五日漲跌
-        old_price = df["Close"].iloc[-5].item()
-        diff = latest_price - old_price
-
-        # 漲跌百分比
-        percent = round((diff / old_price) * 100, 2)
-
-        # 天氣判斷
-        if percent > 5:
-            weather = "☀️ 大晴天"
-            advice = "股票非常強勢，可持續觀察"
-        elif percent > 0:
-            weather = "⛅ 多雲"
-            advice = "股票偏強，可留意後續走勢"
-        elif percent > -5:
-            weather = "🌧️ 小雨"
-            advice = "股票偏弱，建議保守"
-        else:
-            weather = "⛈️ 暴風雨"
-            advice = "風險較高，需注意"
-
-        # =========================
-        # 顯示卡片
-        # =========================
-        st.markdown(f"""
-        <div class="weather-card">
-
-        <h1>{weather}</h1>
-
-        <h2>目前股價：{latest_price}</h2>
-
-        <h3>五日漲跌：{percent}%</h3>
-
-        <p style="font-size:22px;">
-        {advice}
-        </p>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.write("")
-
-        # =========================
-        # K線圖
-        # =========================
-        st.subheader("📈 股價走勢")
-
-        fig = go.Figure()
-
-        fig.add_trace(
-            go.Scatter(
-                x=df.index,
-                y=df["Close"],
-                mode='lines',
-                name='收盤價'
-            )
-        )
-
-        fig.update_layout(
-            template="plotly_dark",
-            height=500
-        )
-
-        st.plotly_chart(fig, use_container_width=True)
-
-    except Exception as e:
-        st.error("發生錯誤")
-        st.code(str(e))
-
-# =========================
-# 熱門排行榜
-# =========================
-st.write("")
-st.subheader("🔥 熱門股票排行榜")
-
-hot_stocks = [
-    ("2330.TW", "台積電"),
-    ("2317.TW", "鴻海"),
-    ("2603.TW", "長榮"),
-    ("2454.TW", "聯發科"),
-    ("2881.TW", "富邦金")
+stocks = [
+    ("2330 台積電", "獅王型", "☀️ 晴天", 82),
+    ("2603 長榮", "狼型", "⛈️ 暴風雨", 76),
+    ("2317 鴻海", "穩健型", "☁️ 多雲", 65),
+    ("2454 聯發科", "狐狸型", "🌧️ 下雨", 45),
 ]
 
-rank = 1
-
-for code, name in hot_stocks:
-
-    score = random.randint(50, 99)
-
+for i, stock in enumerate(stocks, start=1):
     st.markdown(f"""
-    <div class="stock-row">
-        #{rank}　{name}（{code}）
-        <br>
-        能量值：{score}
+    <div class="stock-card">
+        <h3>#{i} {stock[0]}</h3>
+        <p>{stock[1]}</p>
+        <p>{stock[2]}</p>
+        <div class="energy">能量值：{stock[3]}</div>
     </div>
     """, unsafe_allow_html=True)
-
-    rank += 1
