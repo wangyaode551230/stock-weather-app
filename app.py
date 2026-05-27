@@ -627,34 +627,26 @@ for i,(stock,weather_rank,score,animal_rank,change_rank) in enumerate(rank_data,
     </div>
     """, unsafe_allow_html=True)
 
-# =========================
+# ======================
 # AI 解讀
-# =========================
+# ======================
 
 st.write("")
 st.subheader("🤖 AI 情緒解讀")
 
 st.markdown(f"""
-<div class="ai-card">
+<div class="card">
 
-<div style="
-font-size:22px;
-line-height:1.8;
-">
-
-目前市場對 <b>{stock_name}</b> 偏向樂觀。<br><br>
+目前市場對 <b>{selected}</b> 偏向樂觀。
 
 近期成交量提升，
-市場資金持續流入。<br><br>
+市場資金關注度增加。
 
-AI 判定：<br><br>
+AI 判定：
 
-✅ 市場熱度提升<br>
-✅ 短線情緒偏多<br>
-✅ 波動增加<br>
-✅ 關注度提升
-
-</div>
+• 情緒偏強  
+• 波動增加  
+• 短線偏多
 
 </div>
-""", unsafe_allow_html=True
+""", unsafe_allow_html=True)
