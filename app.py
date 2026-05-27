@@ -310,7 +310,14 @@ ranking = [
 for name, icon, role, score in ranking:
 
     st.markdown(f"""
-    <div class="info-card">
+    <div class="info-card" style="
+background: linear-gradient(135deg,#111827,#1f2937);
+padding:20px;
+border-radius:20px;
+margin-bottom:15px;
+color:white;
+box-shadow:0 5px 20px rgba(0,0,0,0.3);
+">
 
     <h2>{icon} {name}</h2>
 
