@@ -221,7 +221,12 @@ energy = random.randint(45, 98)
 
 st.markdown(f"""
 <div class="stock-card" style="
-background:{weather_color};
+background: linear-gradient(135deg,#1e293b,#0f172a);
+padding:30px;
+border-radius:25px;
+color:white;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+margin-top:20px;
 ">
 
 <h3>今日市場天氣</h3>
@@ -233,11 +238,18 @@ margin-bottom:10px;
 {weather}
 </h1>
 
-<h2>
+<h2 style="
+font-size:48px;
+margin-top:20px;
+">
 {animal_icon} {animal}
 </h2>
 
-<h2>
+<h2 style="
+font-size:56px;
+color:#4ade80;
+margin-top:30px;
+">
 市場能量值：{energy}
 </h2>
 
