@@ -369,7 +369,7 @@ top_stocks = [
     ("2881","富邦金")
 ]
 
-for code,name in top_stocks:
+for code, name in top_stocks:
 
     try:
 
@@ -377,141 +377,129 @@ for code,name in top_stocks:
 
         hist = ticker.history(period="5d")
 
-        close_now = hist["Close"].iloc[-1]
-        close_old = hist["Close"].iloc[-2]
+        if len(hist) >= 2:
 
-        change_rank = round(
-            ((close_now - close_old) / close_old) * 100,
-            2
-        )
+            close_now = hist["Close"].iloc[-1]
+            close_old = hist["Close"].iloc[-2]
 
-        if change_rank >= 4:
-            weather_rank = "🔥 火山"
-            score = 95
-            animal_rank = "🦁"
+            change = ((close_now - close_old) / close_old) * 100
 
-        elif change_rank >= 2:
-            weather_rank = "☀️ 晴天"
-            score = 82
-            animal_rank = "🐺"
+            volume = hist["Volume"].iloc[-1]
+            avg_volume = hist["Volume"].mean()
 
-        elif change_rank >= 0:
-            weather_rank = "⛅ 多雲"
-            score = 65
-            animal_rank = "🐢"
+            # AI 情緒判斷
 
-        elif change_rank >= -3:
-            weather_rank = "🌧️ 下雨"
-            score = 42
-            animal_rank = "🦊"
+            if change >= 4:
+                weather = "🔥 火山"
+                score = 95
+                animal = "🦁"
 
-        else:
-            weather_rank = "⛈️ 暴風雨"
-            score = 20
-            animal_rank = "🐍"
+            elif change >= 2:
+                weather = "☀️ 晴天"
+                score = 82
+                animal = "🐺"
 
-        rank_data.append(
-            (
-                f"{code} {name}",
-                weather_rank,
-                score,
-                animal_rank,
-                change_rank
+            elif change >= 0:
+                weather = "☁️ 多雲"
+                score = 65
+                animal = "🐢"
+
+            elif change >= -3:
+                weather = "🌧️ 下雨"
+                score = 42
+                animal = "🦊"
+
+            else:
+                weather = "⛈️ 暴風雨"
+                score = 20
+                animal = "🐍"
+
+            # 成交量爆增加分
+
+            if volume > avg_volume * 1.5:
+                score += 5
+
+            score = min(score, 100)
+
+            rank_data.append(
+                (
+                    f"{code} {name}",
+                    weather,
+                    score,
+                    animal,
+                    round(change, 2)
+                )
             )
-        )
 
     except:
         pass
 
-rank_data = sorted(
-    rank_data,
-    key=lambda x: x[2],
-    reverse=True
-)
+rank_data = sorted(rank_data, key=lambda x: x[2], reverse=True)
 
-# ======================
-# 顯示排行榜
-# ======================
-
-for i, (stock, weather_rank, score, animal_rank, change_rank) in enumerate(rank_data, 1):
-
-    rank_color = "#22c55e" if change_rank >= 0 else "#ef4444"
-
-    rank_arrow = "📈" if change_rank >= 0 else "📉"
-
-    medal = ""
-
-    if i == 1:
-        medal = "🥇"
-    elif i == 2:
-        medal = "🥈"
-    elif i == 3:
-        medal = "🥉"
+for i, (stock, weather, score, animal, change) in enumerate(rank_data[:5], 1):
 
     st.markdown(f"""
-    <div class="rank-card">
-
     <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    background:linear-gradient(135deg,#111827,#0f172a);
+    padding:22px;
+    border-radius:24px;
+    margin-bottom:18px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
     ">
 
-        <div>
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        ">
 
-            <div style="
-            color:#94a3b8;
-            font-size:16px;
-            ">
-            {medal} #{i} 排名
+            <div>
+
+                <div style="
+                font-size:18px;
+                color:#94a3b8;
+                ">
+                #{i} 排名
+                </div>
+
+                <div style="
+                font-size:30px;
+                font-weight:bold;
+                color:white;
+                ">
+                {stock}
+                </div>
+
+                <div style="
+                color:#cbd5e1;
+                font-size:20px;
+                margin-top:10px;
+                ">
+                {weather} {animal}
+                </div>
+
             </div>
 
-            <div style="
-            font-size:30px;
-            font-weight:bold;
-            margin-top:8px;
-            ">
-            {stock}
-            </div>
+            <div style="text-align:right;">
 
-            <div style="
-            font-size:20px;
-            color:#cbd5e1;
-            margin-top:10px;
-            ">
-            {weather_rank} {animal_rank}
+                <div style="
+                color:#22c55e;
+                font-size:42px;
+                font-weight:bold;
+                ">
+                {score}
+                </div>
+
+                <div style="
+                color:#94a3b8;
+                font-size:14px;
+                ">
+                能量值
+                </div>
+
             </div>
 
         </div>
-
-        <div style="text-align:right;">
-
-            <div style="
-            color:{rank_color};
-            font-size:22px;
-            ">
-            {rank_arrow} {change_rank}%
-            </div>
-
-            <div style="
-            font-size:46px;
-            font-weight:bold;
-            color:#22c55e;
-            margin-top:10px;
-            ">
-            {score}
-            </div>
-
-            <div style="
-            color:#94a3b8;
-            font-size:14px;
-            ">
-            能量值
-            </div>
-
-        </div>
-
-    </div>
 
     </div>
     """, unsafe_allow_html=True)
