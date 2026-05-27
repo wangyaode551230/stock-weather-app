@@ -250,6 +250,14 @@ font-size:22px;
 ">
 最新價格：{round(latest_price,2)}
 </p>
+<p style="
+font-size:20px;
+">
+能量值越高代表股票越強，
+80以上偏強勢，
+50附近普通，
+30以下偏弱勢。
+</p>
 
 <p style="
 font-size:22px;
