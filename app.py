@@ -235,7 +235,7 @@ stock_options = stock_list.apply(
 
 selected_stock = st.selectbox(
     "搜尋股票",
-    stock_options
+    stock_options[:300]
 )
 
 # 股票代號
