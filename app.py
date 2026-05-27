@@ -247,9 +247,9 @@ stock_code = selected_stock.split(" ")[0]
 try:
 
     # 自動判斷台股市場
-ticker = None
+    ticker = None
 
-for suffix in [".TW", ".TWO"]:
+    for suffix in [".TW", ".TWO"]:
     try:
         test = yf.Ticker(f"{stock_code}{suffix}")
         info = test.info
