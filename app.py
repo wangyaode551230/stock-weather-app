@@ -96,12 +96,9 @@ popular = {
 
 st.markdown("### 🔥 熱門股票")
 
-cols = st.columns(5)
-
-for i, (code, name) in enumerate(popular.items()):
-    with cols[i]:
-        if st.button(f"{code}\n{name}", use_container_width=True):
-            stock_code = code
+for code, name in popular.items():
+    if st.button(f"{code} {name}"):
+        stock_code = code
 
             st.markdown(f"""
             <div class="card">
@@ -250,4 +247,6 @@ if stock_code != "":
             st.warning("市場偏保守，短線波動提高。")
 
     except:
+    if stock_code != "":
         st.error("股票代號錯誤")
+      
