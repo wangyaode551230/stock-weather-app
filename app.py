@@ -255,16 +255,16 @@ try:
             info = test.info
 
             if info and info.get("regularMarketPrice"):
-            ticker = test
-            break
+                ticker = test
+                break
         except:
         pass
-
-if ticker is None:
+        
+    if ticker is None:
     st.error("查無股票資料")
     st.stop()
 
-info = ticker.info
+    info = ticker.info
 
     # 即時資訊
     fast = ticker.fast_info
