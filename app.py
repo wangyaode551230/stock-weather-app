@@ -129,32 +129,107 @@ energy = random.randint(40,95)
 # ======================
 
 st.markdown(f"""
-<div class="card">
+<div style="
+background: linear-gradient(135deg,#1e3a8a,#0f172a);
+padding:35px;
+border-radius:30px;
+margin-bottom:25px;
+box-shadow:0 0 30px rgba(0,0,0,0.5);
+">
 
-<div class="weather">{weather[0]}</div>
+<div style="font-size:85px;">
+{weather[0]}
+</div>
 
-<div class="stock-name">{selected}</div>
+<div style="
+font-size:42px;
+font-weight:bold;
+color:white;
+margin-top:10px;
+">
+{selected}
+</div>
 
-<br>
-
-<div class="small">
+<div style="
+font-size:22px;
+color:#cbd5e1;
+margin-top:8px;
+">
 {weather[1]}
 </div>
 
 <br>
 
-<div class="energy">
+<div style="
+background:#111827;
+padding:20px;
+border-radius:20px;
+margin-top:10px;
+">
+
+<div style="
+font-size:18px;
+color:#94a3b8;
+">
+AI 能量值
+</div>
+
+<div style="
+font-size:60px;
+font-weight:bold;
+color:#22c55e;
+">
 ⚡ {energy}
 </div>
 
-<div class="small">
-AI 能量值
+<div style="
+width:100%;
+height:16px;
+background:#1e293b;
+border-radius:30px;
+overflow:hidden;
+margin-top:10px;
+">
+
+<div style="
+width:{energy}%;
+height:100%;
+background:linear-gradient(90deg,#22c55e,#4ade80);
+border-radius:30px;
+">
+</div>
+
+</div>
+
 </div>
 
 <br>
 
-<div style="font-size:24px;">
+<div style="
+background:linear-gradient(135deg,#78350f,#451a03);
+padding:22px;
+border-radius:25px;
+">
+
+<div style="
+font-size:32px;
+font-weight:bold;
+">
 {animal}
+</div>
+
+<div style="
+font-size:18px;
+color:#fde68a;
+margin-top:10px;
+">
+
+AI 判定此股票近期市場關注度提升，
+資金動能偏強，
+短線情緒偏多。
+
+</div>
+
 </div>
 
 </div>
