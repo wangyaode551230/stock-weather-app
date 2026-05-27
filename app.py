@@ -107,10 +107,10 @@ if st.button("開始分析"):
             st.stop()
 
         # 最新價格
-        latest_price = round(df["Close"].iloc[-1], 2)
+        latest_price = float(df["Close"].iloc[-1])
 
         # 五日漲跌
-        old_price = df["Close"].iloc[-5]
+        old_price = float(df["Close"].iloc[-5])
         diff = latest_price - old_price
 
         # 漲跌百分比
