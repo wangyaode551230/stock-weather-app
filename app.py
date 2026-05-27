@@ -117,6 +117,8 @@ stock_code = st.text_input(
     placeholder="輸入股票代號，例如 2330",
     label_visibility="collapsed"
 )
+if stock_code:
+    st.write(f"你搜尋的是：{stock_code}")
 # ======================
 # 股票資料
 # ======================
