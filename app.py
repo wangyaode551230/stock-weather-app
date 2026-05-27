@@ -100,15 +100,7 @@ for code, name in popular.items():
     if st.button(f"{code} {name}"):
         stock_code = code
 
-            st.markdown(f"""
-            <div class="card">
-                <h2>{name} ({code})</h2>
-                <h3>☀️ 晴天</h3>
-                <p>人格：王者型</p>
-                <h1 style="color:#4ade80;">82</h1>
-            </div>
-            """, unsafe_allow_html=True)
-
+          
 # =========================
 # 股票分析
 # =========================
