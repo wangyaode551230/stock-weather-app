@@ -109,11 +109,6 @@ search = st.text_input(
     value="2330"
 )
 
-search = st.text_input(
-    "🔍 搜尋股票代號或名稱",
-    value="2330"
-)
-
 # 自動判斷股票代號
 stock_code = search.strip()
 
