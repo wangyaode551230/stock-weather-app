@@ -88,17 +88,18 @@ for code, info in twstock.codes.items():
         info.market in ["上市", "上櫃"]
         and "購" not in info.name
         and "售" not in info.name
+        and len(code) == 4
     ):
 
         stock_name = f"{code} {info.name}"
 
         # 上市股票
-if info.market == "上市":
-    stocks[stock_name] = f"{code}.TW"
+        if info.market == "上市":
+            stocks[stock_name] = f"{code}.TW"
 
-# 上櫃股票
-else:
-    stocks[stock_name] = f"{code}.TWO"
+        # 上櫃股票
+        else:
+            stocks[stock_name] = f"{code}.TWO"
 
 # =========================
 # 搜尋股票
