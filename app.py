@@ -250,14 +250,14 @@ try:
     ticker = None
 
     for suffix in [".TW", ".TWO"]:
-    try:
-        test = yf.Ticker(f"{stock_code}{suffix}")
-        info = test.info
+        try:
+            test = yf.Ticker(f"{stock_code}{suffix}")
+            info = test.info
 
-        if info and info.get("regularMarketPrice"):
+            if info and info.get("regularMarketPrice"):
             ticker = test
             break
-    except:
+        except:
         pass
 
 if ticker is None:
