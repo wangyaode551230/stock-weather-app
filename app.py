@@ -145,12 +145,7 @@ selected_stock = st.selectbox(
 # 股票代碼
 stock_id = stocks[selected_stock]
 
-selected_stock = st.selectbox(
-    "搜尋股票",
-    list(stock_options.keys())
-)
 
-stock_id = stock_options[selected_stock]
 
 # =====================
 # 抓股票資料
