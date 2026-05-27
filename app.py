@@ -113,7 +113,7 @@ st.markdown("""
 st.markdown('<div class="title">🔥熱門股票人格榜</div>', unsafe_allow_html=True)
 
 stock_code = st.text_input(
-    "搜尋股票",
+    "",
     placeholder="輸入股票代號，例如 2330"
 )
 
