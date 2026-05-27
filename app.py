@@ -1,383 +1,399 @@
 import streamlit as st
-import random
+import yfinance as yf
+import plotly.graph_objects as go
+
+# =========================
+# 頁面設定
+# =========================
 
 st.set_page_config(
-    page_title="股市天氣",
-    page_icon="📈",
+    page_title="AI 台股人格分析",
+    page_icon="🔥",
     layout="centered"
 )
 
-# ======================
+# =========================
 # CSS
-# ======================
+# =========================
 
 st.markdown("""
 <style>
 
+/* 整體背景 */
+
+.stApp{
+    background:#020b1c;
+}
+
+/* 全站字體 */
+
 html, body, [class*="css"]{
-    background:#03153a;
-    color:white;
-    font-family:sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    color:#ffffff;
 }
 
-.block-container{
-    padding-top:1rem;
-    padding-bottom:3rem;
-}
+/* 主標題 */
 
-/* 主卡片 */
-
-.weather-card{
-    background:linear-gradient(135deg,#ffb347,#ffd93d);
-    padding:35px;
-    border-radius:30px;
+.main-title{
+    font-size:64px;
+    font-weight:900;
     margin-bottom:30px;
-    color:white;
-}
-
-/* 股票卡 */
-
-.stock-card{
-    background:#071633;
-    padding:25px;
-    border-radius:28px;
-    margin-top:20px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.3);
-}
-
-/* 能量值 */
-
-.energy{
-    font-size:60px;
-    font-weight:bold;
-    color:#57f287;
-}
-
-/* 標題 */
-
-.title{
-    font-size:52px;
-    font-weight:bold;
-    margin-bottom:20px;
+    color:#ffffff;
 }
 
 /* 搜尋框 */
 
 .stTextInput input{
-    background:rgba(255,255,255,0.08) !important;
-    color:black !important;
 
-    border:1px solid rgba(255,255,255,0.08) !important;
+    background:#183766 !important;
 
-    border-radius:18px !important;
+    color:#ffffff !important;
 
-    height:52px !important;
+    border:2px solid #4da3ff !important;
 
-    font-size:20px !important;
+    border-radius:22px !important;
 
-    padding-left:20px !important;
+    height:65px !important;
 
-    backdrop-filter: blur(10px);
+    font-size:28px !important;
 
-    box-shadow:0 4px 20px rgba(0,0,0,0.25);
+    padding-left:25px !important;
 
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+}
+
+/* 股票卡 */
+
+.stock-card{
+
+    background:#102b63;
+
+    border-radius:35px;
+
+    padding:35px;
+
+    margin-top:25px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
+}
+
+/* 股票名稱 */
+
+.stock-title{
+
+    font-size:48px;
+
+    font-weight:900;
+
+    margin-bottom:20px;
+
+    color:white;
+}
+
+/* 大文字 */
+
+.big-text{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    margin-top:15px;
+
+    color:white;
+}
+
+/* 能量值 */
+
+.energy{
+
+    color:#00ff88;
+
+    font-size:62px;
+
+    font-weight:900;
+
+    margin-top:20px;
+}
+
+/* 解釋卡 */
+
+.info-box{
+
+    background:white;
+
+    color:black;
+
+    border-radius:30px;
+
+    padding:30px;
+
+    margin-top:30px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* 解釋標題 */
+
+.info-box h1{
+
+    font-size:42px;
+
+    color:black;
+}
+
+.info-box h2{
+
+    font-size:32px;
+
+    color:black;
+}
+
+/* 解釋文字 */
+
+.info-box p{
+
+    font-size:24px;
+
+    color:#111111;
+
+    line-height:1.8;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ======================
-# 主天氣卡
-# ======================
+# =========================
+# 主標題
+# =========================
 
-st.markdown("""
-<div class="weather-card">
+st.markdown(
+    '<div class="main-title">🔥 AI 台股人格分析</div>',
+    unsafe_allow_html=True
+)
 
-<h3>今日市場天氣</h3>
+# =========================
+# 搜尋框
+# =========================
 
-<h1 style="font-size:72px;">
-晴天 ☀️
-</h1>
-
-<h2>市場偏樂觀</h2>
-
-<h2>資金流入，人氣上升中！</h2>
-
-</div>
-""", unsafe_allow_html=True)
-
-# ======================
-# 搜尋
-# ======================
-
-st.markdown('<div class="title">🔥熱門股票人格榜</div>', unsafe_allow_html=True)
-
-# 搜尋股票
 stock_code = st.text_input(
     "",
-    placeholder="輸入股票代號，例如 2330",
+    placeholder="輸入台股代號，例如 2330、0050、00878",
     label_visibility="collapsed"
 )
 
-# 即時查詢
+# =========================
+# 股票搜尋
+# =========================
+
 if stock_code:
 
     try:
+
+        # 股票資料
         ticker = yf.Ticker(f"{stock_code}.TW")
 
-try:
-    info = ticker.info
-except:
-    info = {}
+        # 基本資訊
+        info = ticker.info
 
-# 股票名稱
-name = info.get("shortName", stock_code)
-
-# 股價
-price = info.get("regularMarketPrice")
-
-# 如果抓不到即時股價
-if not price:
-    try:
+        # 即時資訊
         fast = ticker.fast_info
+
+        # 歷史資料
+        hist = ticker.history(period="1mo")
+
+        # =========================
+        # 股票資訊
+        # =========================
+
+        name = info.get("shortName", stock_code)
+
         price = fast.get("lastPrice", 0)
-    except:
-        price = 0
 
-# 漲跌幅
-change = info.get("regularMarketChangePercent", 0)
+        change = info.get("regularMarketChangePercent", 0)
 
-# 如果還是沒有漲跌幅
-if change is None:
-    change = 0
+        if change is None:
+            change = 0
 
-        # 天氣人格
-        if change >= 3:
+        volume = info.get("volume", 0)
+
+        market_cap = info.get("marketCap", 0)
+
+        pe = info.get("trailingPE", "N/A")
+
+        # =========================
+        # AI 人格系統
+        # =========================
+
+        if change >= 4:
+
+            animal = "🦁 獅王型"
+
             weather = "☀️ 晴天"
-            personality = "獅王型"
-            energy = 82
 
-        elif change >= 0:
-            weather = "⛅ 多雲"
-            personality = "穩健型"
-            energy = 65
+            energy = 95
 
-        elif change >= -3:
-            weather = "🌧️ 下雨"
-            personality = "狐狸型"
-            energy = 45
+            mood = """
+            市場極度強勢。
+            主力資金大量流入，
+            多頭氣氛非常明顯。
+            """
+
+        elif change >= 1:
+
+            animal = "🦊 狐狸型"
+
+            weather = "🌤️ 多雲"
+
+            energy = 75
+
+            mood = """
+            市場偏多。
+            人氣持續增加，
+            資金流動穩定。
+            """
+
+        elif change >= -2:
+
+            animal = "🐱 貓咪型"
+
+            weather = "🌧️ 小雨"
+
+            energy = 50
+
+            mood = """
+            市場觀望中。
+            波動增加，
+            買盤力量減弱。
+            """
 
         else:
+
+            animal = "🐺 狼型"
+
             weather = "⛈️ 暴風雨"
-            personality = "狼型"
+
             energy = 20
+
+            mood = """
+            市場恐慌。
+            空方力量強勢，
+            波動風險偏高。
+            """
+
+        # =========================
+        # 股票卡片
+        # =========================
 
         st.markdown(f"""
         <div class="stock-card">
 
-            <h1>{stock_code} {name}</h1>
+            <div class="stock-title">
+            {stock_code} {name}
+            </div>
 
-            <h2>{weather}</h2>
+            <div class="big-text">
+            {animal}
+            </div>
 
-            <p>{personality}</p>
+            <div class="big-text">
+            {weather}
+            </div>
 
-            <h1 style="color:#4ade80;">
-                能量值：{energy}
-            </h1>
+            <div class="energy">
+            ⚡ 能量值：{energy}
+            </div>
 
-            <p>目前股價：{price}</p>
+            <div class="big-text">
+            💰 即時股價：{round(price,2)}
+            </div>
 
-            <p>漲跌幅：{round(change,2)}%</p>
+            <div class="big-text">
+            📈 漲跌幅：{round(change,2)}%
+            </div>
+
+            <div class="big-text">
+            📊 成交量：{volume:,}
+            </div>
+
+            <div class="big-text">
+            🏦 市值：{market_cap:,}
+            </div>
+
+            <div class="big-text">
+            💎 本益比：{pe}
+            </div>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+        # =========================
+        # 股價圖
+        # =========================
+
+        fig = go.Figure()
+
+        fig.add_trace(go.Scatter(
+            x=hist.index,
+            y=hist["Close"],
+            mode="lines",
+            name="股價"
+        ))
+
+        fig.update_layout(
+
+            template="plotly_dark",
+
+            height=450,
+
+            paper_bgcolor="#102b63",
+
+            plot_bgcolor="#102b63",
+
+            font=dict(
+                size=18,
+                color="white"
+            )
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        # =========================
+        # AI 圖表解釋
+        # =========================
+
+        st.markdown(f"""
+        <div class="info-box">
+
+        <h1>📚 AI 圖表解釋</h1>
+
+        <h2>{weather}</h2>
+
+        <p>
+        {mood}
+        </p>
+
+        <h2>🧠 動物人格分析</h2>
+
+        <p>
+        {animal} 代表目前市場主力資金風格。
+        能量值越高，
+        代表市場越強勢。
+        </p>
+
+        <h2>⚡ 能量值說明</h2>
+
+        <p>
+        80 以上：市場非常強勢<br>
+        60 - 80：偏多行情<br>
+        40 - 60：震盪整理<br>
+        20 - 40：偏弱行情<br>
+        20 以下：市場恐慌
+        </p>
 
         </div>
         """, unsafe_allow_html=True)
 
     except:
+
         st.error("查無股票資料")
-# ======================
-# 股票資料
-# ======================
-
-stocks = [
-
-{
-    "rank":"#1",
-    "code":"2330",
-    "name":"台積電",
-    "animal":"獅王型",
-    "icon":"🦁",
-    "weather":"☀️ 晴天",
-    "energy":"82"
-},
-
-{
-    "rank":"#2",
-    "code":"2603",
-    "name":"長榮",
-    "animal":"狼型",
-    "icon":"🐺",
-    "weather":"⛈️ 暴風雨",
-    "energy":"76"
-},
-
-{
-    "rank":"#3",
-    "code":"2317",
-    "name":"鴻海",
-    "animal":"穩健型",
-    "icon":"🐢",
-    "weather":"☁️ 多雲",
-    "energy":"65"
-},
-
-{
-    "rank":"#4",
-    "code":"2454",
-    "name":"聯發科",
-    "animal":"狡猾型",
-    "icon":"🦊",
-    "weather":"🌧️ 下雨",
-    "energy":"45"
-},
-
-{
-    "rank":"#5",
-    "code":"2881",
-    "name":"富邦金",
-    "animal":"海豚型",
-    "icon":"🐬",
-    "weather":"☁️ 多雲",
-    "energy":"58"
-}
-
-]
-
-# ======================
-# 顯示股票卡
-# ======================
-
-for s in stocks:
-
-    if stock_code == "" or stock_code in s["code"]:
-
-        st.markdown(f"""
-        <div class="stock-card">
-
-        <h1>
-        {s["rank"]} {s["code"]} {s["name"]}
-        </h1>
-
-        <h2>
-        {s["icon"]} {s["animal"]}
-        </h2>
-
-        <h2>
-        {s["weather"]}
-        </h2>
-
-        <div class="energy">
-        能量值：{s["energy"]}
-        </div>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-# ======================
-# 圖表解釋
-# ======================
-
-st.markdown("<br><br>", unsafe_allow_html=True)
-
-st.markdown("""
-<div class="title">
-📚 圖表解釋
-</div>
-""", unsafe_allow_html=True)
-
-# 天氣解釋
-
-st.markdown("""
-<div class="stock-card">
-
-<h2>☀️ 晴天</h2>
-<h3>市場偏樂觀，股價穩定上升。</h3>
-
-<hr>
-
-<h2>☁️ 多雲</h2>
-<h3>市場觀望中，方向不明。</h3>
-
-<hr>
-
-<h2>🌧️ 下雨</h2>
-<h3>市場偏弱，容易震盪。</h3>
-
-<hr>
-
-<h2>⛈️ 暴風雨</h2>
-<h3>波動劇烈，高風險。</h3>
-
-</div>
-""", unsafe_allow_html=True)
-
-# 動物人格
-
-st.markdown("""
-<div class="stock-card">
-
-<h2>🦁 獅王型</h2>
-<h3>市場領導者，人氣高。</h3>
-
-<hr>
-
-<h2>🐺 狼型</h2>
-<h3>波動大，攻擊性強。</h3>
-
-<hr>
-
-<h2>🐢 穩健型</h2>
-<h3>適合長期持有。</h3>
-
-<hr>
-
-<h2>🦊 狡猾型</h2>
-<h3>容易突然爆發。</h3>
-
-<hr>
-
-<h2>🐬 海豚型</h2>
-<h3>穩定成長型股票。</h3>
-
-</div>
-""", unsafe_allow_html=True)
-
-# 能量值解釋
-
-st.markdown("""
-<div class="stock-card">
-
-<h2>🔥 80 - 100</h2>
-<h3>市場非常強勢</h3>
-
-<hr>
-
-<h2>📈 60 - 80</h2>
-<h3>偏強勢</h3>
-
-<hr>
-
-<h2>➖ 40 - 60</h2>
-<h3>普通</h3>
-
-<hr>
-
-<h2>📉 20 - 40</h2>
-<h3>偏弱勢</h3>
-
-<hr>
-
-<h2>❄️ 0 - 20</h2>
-<h3>非常弱勢</h3>
-
-</div>
-""", unsafe_allow_html=True)
