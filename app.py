@@ -371,7 +371,7 @@ for code,name in top_stocks:
 
 rank_data = sorted(rank_data, key=lambda x: x[2], reverse=True)
 
-for i, (stock,weather,score,animal,change) in enumerate(rank_data, start=1):
+for i, (stock, weather, score, animal, change) in enumerate(rank_data[:5], 1):
 
     st.markdown(f"""
     <div style="
@@ -382,79 +382,59 @@ for i, (stock,weather,score,animal,change) in enumerate(rank_data, start=1):
     box-shadow:0 0 20px rgba(0,0,0,0.3);
     ">
 
-    <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    ">
-
-    <div>
-
         <div style="
-        font-size:18px;
-        color:#94a3b8;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
         ">
-        #{i} 排名
+
+            <div>
+
+                <div style="
+                font-size:18px;
+                color:#94a3b8;
+                ">
+                #{i} 排名
+                </div>
+
+                <div style="
+                font-size:30px;
+                font-weight:bold;
+                color:white;
+                ">
+                {stock}
+                </div>
+
+                <div style="
+                color:#cbd5e1;
+                font-size:20px;
+                margin-top:10px;
+                ">
+                {weather} {animal}
+                </div>
+
+            </div>
+
+            <div style="text-align:right;">
+
+                <div style="
+                color:#22c55e;
+                font-size:42px;
+                font-weight:bold;
+                ">
+                {score}
+                </div>
+
+                <div style="
+                color:#94a3b8;
+                font-size:14px;
+                ">
+                能量值
+                </div>
+
+            </div>
+
         </div>
-
-        <div style="
-        font-size:32px;
-        margin-top:8px;
-        ">
-        {animal}
-        </div>
-
-    </div>
-
-    <div style="
-    flex:1;
-    margin-left:20px;
-    ">
-
-        <div style="
-        font-size:30px;
-        font-weight:bold;
-        color:white;
-        ">
-        {stock}
-        </div>
-
-        <div style="
-        color:#cbd5e1;
-        font-size:20px;
-        margin-top:10px;
-        ">
-        {weather}
-        </div>
-
-    </div>
-
-    <div style="text-align:right;">
-
-        <div style="
-        font-size:36px;
-        ">
-        {"📈" if change > 0 else "📉"}
-        </div>
-
-        <div style="
-        font-size:56px;
-        font-weight:bold;
-        color:#22c55e;
-        ">
-        {score}
-        </div>
-
-        <div style="
-        color:#94a3b8;
-        font-size:14px;
-        ">
-        能量值
-        </div>
-
-    </div>
-
-    </div>
 
     </div>
     """, unsafe_allow_html=True)
