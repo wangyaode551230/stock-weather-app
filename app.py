@@ -185,24 +185,38 @@ st.markdown(
 # 自動抓全部台股
 # =========================
 
-
 def load_stock_list():
-    url = "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2"
+    try:
+        url = "https://isin.twse.com.tw/isin/C_public.jsp?strMode=2"
 
-    tables = pd.read_html(url)
+        tables = pd.read_html(url)
 
-    df = tables[0]
+        df = tables[0]
 
-    df.columns = df.iloc[0]
+        df.columns = df.iloc[0]
 
-    df = df[1:]
+        df = df[1:]
 
-    df[['code', 'name']] = df['有價證券代號及名稱'].str.split('　', expand=True)
+        df[['code', 'name']] = df['有價證券代號及名稱'].str.split('　', expand=True)
 
-    df = df[['code', 'name']]
+        df = df[['code', 'name']]
 
-    return df
-    
+        return df
+
+    except:
+        stock_data = [
+            ("2330", "台積電"),
+            ("2317", "鴻海"),
+            ("2454", "聯發科"),
+            ("2308", "台達電"),
+            ("2603", "長榮"),
+            ("2881", "富邦金"),
+            ("2891", "中信金"),
+            ("0050", "元大台灣50")
+        ]
+
+        return pd.DataFrame(stock_data, columns=["code", "name"])
+
 
     
 # 載入股票資料
