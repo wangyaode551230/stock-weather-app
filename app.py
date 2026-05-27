@@ -185,7 +185,7 @@ st.markdown(
 # 自動抓全部台股
 # =========================
 
-tables = pd.read_html(url)
+    tables = pd.read_html(url)
 
     df = tables[0]
 
@@ -198,22 +198,20 @@ tables = pd.read_html(url)
     df = df[['code', 'name']]
 
     return df
-    except:
-        stock_data = [
-            ("2330", "台積電"),
-            ("2317", "鴻海"),
-            ("2454", "聯發科"),
-            ("2308", "台達電"),
-            ("2603", "長榮"),
-            ("2881", "富邦金"),
-            ("2891", "中信金"),
-            ("0050", "元大台灣50")
-        ]
 
-        return pd.DataFrame(stock_data, columns=["code", "name"])
+except:
+    stock_data = [
+        ("2330", "台積電"),
+        ("2317", "鴻海"),
+        ("2454", "聯發科"),
+        ("2308", "台達電"),
+        ("2603", "長榮"),
+        ("2881", "富邦金"),
+        ("2891", "中信金"),
+        ("0050", "元大台灣50")
+    ]
 
-
-    
+    return pd.DataFrame(stock_data, columns=["code", "name"])
 # 載入股票資料
 stock_list = load_stock_list()
 
